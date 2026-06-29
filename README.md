@@ -10,11 +10,16 @@ Build a well structured multi agent workflow to help with Project Manager's deci
 # Solution
 We will be using the **Langflow** platform for this orchestration and each agent will use an Open AI LLM model and well crafted system prompts. 
 Each Agent will handle specific tasks and pass on the output to the subsequent agent in the flow. We also will add a Critic( feedback loop )agent to achieve maximum trustworhty decisions.
-1. Planner Agent - Task decompostion , set decision criteria based on the use case/decision brief provided by user.
-2. Researcher Agent - Based on the user input and Planner's output , gathers fact, lists out - assumptions, unknowns and risks.
-3. Analyzer Agent - Based on the reasher's list deeps dive and analyzes the decision brief from both aspects - Customer lens and Risk lens. Highlights the Timelines , Risk and owners.
-4. Synthesize Agent - Gathers findings(both Customer and Risk lens) from the analyzer and provides both decision memos.
-5. Critic Agent - Critiques the Decision memos for missing info, hallucinations and gaps in the suggested decision memo. So that Project Manager is aware of risks and tagents that needs more attention before making the final decision.
+1.**Planner Agent** - Task decompostion , set decision criteria based on the use case/decision brief provided by user. The Planner separates the planning stage from research and analysis. 
+2. **Researcher Agent** - Based on the user input and Planner's output , gathers fact, lists out - assumptions, unknowns and risks. The Researcher isolates knowledge extraction. It prevents the downstream Analyzer from 
+inventing facts. This agent is crucial for controlling hallucinations
+3. **Analyzer Agent** - Based on the reasher's list deeps dive and analyzes the decision brief from both aspects - Customer lens and Risk lens. Highlights the Timelines , Risk and owners. The Analyzer is the decision maker. It cannot invent metrics; if information is missing it must suggest what to measure. At this stage you can already produce a reasonable memo, but you don’t yet have a critic or confidence score. One analyzer can miss things because it thinks from a single perspective. 
+                Here we create two analyzers that look at the same decision in two different ways: 
+                ● Analyzer A: Customer / Revenue / Growth lens 
+                ● Analyzer B: Risk / Reliability / Privacy / Execution lens
+
+4. **Synthesis Agent** - Gathers findings(both Customer and Risk lens) from the analyzer and provides one final memo by merging both perspectives. Synthesis Agent must resolve conflicts, not just combine text. 
+5. **Critic Agent( Red Team reviewer + Escalation Flag )** - Critiques the Decision memos for missing info, hallucinations and gaps in the suggested decision memo. So that Project Manager is aware of risks and tagents that needs more attention before making the final decision. —It does not rewrite the memo
 
 # PoC Use case 
 Product Feature Launch 

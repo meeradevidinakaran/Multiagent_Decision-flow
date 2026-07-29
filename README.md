@@ -1,35 +1,68 @@
-# Multiagent_Decision-flow
+# Multi agent_Decision-flow ( Parallel Orchestration )
 This is a simple multi agent orchestration demonstrating advantages of Multi agent workflow, When to not use single agent and It's tradeoffs.
 
 # Problem Statement
-A Project Manager at Nova cart is planning to offload his decision making tasks to a single agent. Ex: He wants to replace a feature from Nova Cart's phone that 20% of users are actively using. In this scenario he would need behavioural data, revenue impact modeling, churn prediction, sentiment analysis, etc. to make a decision on the same. Given a Single agent might seem capable of all these tasks, When we overload a single agent with too many tasks, It results in vague outputs, introduce hallucinations and reduce the trustworthiness of the suggested outputs.
+A Project Manager at Nova cart is planning to offload his decision making tasks to a single agent. Ex: He wants to replace a feature from Nova Cart's phone that 20% of users are actively using. In this scenario he would need behavioral data, revenue impact modeling, churn prediction, sentiment analysis, etc. to make a decision on the same. Given a Single agent might seem capable of all these tasks, When we overload a single agent with too many tasks, It results in vague outputs, introduce hallucinations and reduce the trustworthiness of the suggested outputs.
 
 # Goal 
 Build a well structured multi agent workflow to help with Project Manager's decision making tasks. Enabling faster but deeply researched and well analyzed decisions from both a Customer centric lens and Revenue risk lens. The final decision suggested should be critiqued for any gaps and provide a concrete roadmap to the Project Manager.
 
 # Solution
-We will be using the **Langflow** platform for this orchestration and each agent will use an Open AI LLM model and well crafted system prompts. 
-Each Agent will handle specific tasks and pass on the output to the subsequent agent in the flow. We also will add a Critic( feedback loop )agent to achieve maximum trustworhty decisions.
-1.**Planner Agent** - Task decompostion , set decision criteria based on the use case/decision brief provided by user. The Planner separates the planning stage from research and analysis. 
+We will be using the **Langflow** platform for this orchestration and each agent will use an Open AI LLM model and well crafted system prompts to analyze a **Decision Brief** and Publish a **Decision Memo** . We will also push this to a Notion Workspace that allows PM/TPM to collaborate and gather feedback from multiple stakeholders before making the final decision.
+
+Each Agent will handle specific tasks and pass on the output to the subsequent agent in the flow. 
+
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/0c053d5d-092f-4607-ac9e-791f949cad09" />
+
+1.**Planner Agent** - Task decomposition , set decision criteria based on the use case/decision brief provided by user. The Planner separates the planning stage from research and analysis. 
+
 2. **Researcher Agent** - Based on the user input and Planner's output , gathers fact, lists out - assumptions, unknowns and risks. The Researcher isolates knowledge extraction. It prevents the downstream Analyzer from 
 inventing facts. This agent is crucial for controlling hallucinations
-3. **Analyzer Agent** - Based on the reasher's list deeps dive and analyzes the decision brief from both aspects - Customer lens and Risk lens. Highlights the Timelines , Risk and owners. The Analyzer is the decision maker. It cannot invent metrics; if information is missing it must suggest what to measure. At this stage you can already produce a reasonable memo, but you don’t yet have a critic or confidence score. One analyzer can miss things because it thinks from a single perspective. 
+
+3. **Analyzer Agent** - Based on the researcher's list deeps dive and analyzes the decision brief from both aspects - Customer lens and Risk lens. Highlights the Timelines , Risk and owners. The Analyzer is the decision maker. It cannot invent metrics; if information is missing it must suggest what to measure. At this stage you can already produce a reasonable memo, but you don’t yet have a critic or confidence score. One analyzer can miss things because it thinks from a single perspective. 
                 Here we create two analyzers that look at the same decision in two different ways: 
                 ● Analyzer A: Customer / Revenue / Growth lens 
                 ● Analyzer B: Risk / Reliability / Privacy / Execution lens
 
 4. **Synthesis Agent** - Gathers findings(both Customer and Risk lens) from the analyzer and provides one final memo by merging both perspectives. Synthesis Agent must resolve conflicts, not just combine text. 
-5. **Critic Agent( Red Team reviewer + Escalation Flag )** - Critiques the Decision memos for missing info, hallucinations and gaps in the suggested decision memo. So that Project Manager is aware of risks and tagents that needs more attention before making the final decision. —It does not rewrite the memo
 
-# PoC Use case 
-Product Feature Launch 
-We are considering launching a Premium Subscription Tier for NovaCart's top-performing product line. The subscription would offer priority shipping, exclusive discounts, and early access to new products. The target is to increase Customer Lifetime Value (CLV) by 15% within 6 months. Current blended CLV is approximately $1,420. The rollout plan is a 5% customer cohort pilot with a kill switch. Key questions: Can our current revenue base support the investment? Which SKUs should anchor the subscription based on sales performance? What are the conversion and weekly sales trends to justify timing? Stakeholders include VP of Product, Finance Lead, and Operations. Options: (A) Launch pilot in Q3 with top 2 SKUs, (B) Delay until full product catalog analysis is complete, (C) Launch a limited free-tier first to gauge interest. The decision is needed within 2 weeks. 
+5. **Critic Agent( Red Team reviewer + Escalation Flag )** - Critiques the Decision memos for missing info, hallucinations and gaps in the suggested decision memo. So that Project Manager is aware of risks and tangents that needs more attention before making the final decision. —It does not rewrite the memo
 
+6. **Reviser Agent** - Based on the Draft memo and critic feedback the Reviser agent would provide a cleaner memo ; Missing items would be moved into Assumptions/Unknowns; Clearer mitigations + stronger next steps and ESCALATE decision updated if needed.
+
+7. **Confidence Scorer Agent** - This Agent Scores the Revised Memo between 0-100. Along with the reasoning for justifying the score and What can be done to increase the score. In general if there is lack of data , or key constraints lack evidence then the score would be lower.
+
+8. **Publisher Agent** - Provides a Clean Final Decision Memo along with a Confidence Score and reasoning.
+
+A copy of the Publisher's Output is pasted to the Notion Page configured. We can share the Notion page with stakeholders for async review.
+   
+# Sample Test 
+
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/6390caf1-9c31-48e3-a75a-250999d0f6a2" />
+
+**Decision Brief (input)**
+ 
+ Vendor Selection :
+
+ NovaCart needs to select a cloud data warehouse for its analytics platform. Current Redshift cluster costs $18K/month and query performance degrades during peak   hours. 
+ Options: (A) Migrate to Snowflake ($22K/month estimated, better concurrency), 
+          (B) Migrate to BigQuery (pay-per-query, estimated $15K-25K/month), 
+          (C) Optimize existing Redshift with RA3 nodes ($20K/month).
+ 
+ Data volume is 14TB growing 2TB/quarter. 12 analysts and 3 data engineers are daily users. Migration timeline constraint: must complete before Q4 planning cycle.  No POC has been run on Snowflake or BigQuery. Security review for cross-cloud data transfer is pending. 
+
+ **Decision Memo (output)**
+ 
+ <img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/51ebfc23-4e5b-4f45-9871-0d706c218ec7" />
+ 
 # Setup Instructions
+![Setup_Instructions](docs/Setup_Instructions.md)
 
 # Scaling_Strategy
+![Scaling_Strategy](docs/Scaling_Strategy)
 
-# Demo
+
+
 
 
 

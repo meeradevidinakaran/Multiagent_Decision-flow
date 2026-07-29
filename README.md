@@ -59,7 +59,8 @@ A copy of the Publisher's Output is pasted to the Notion Page configured. We can
 ![Setup_Instructions](docs/Setup_Instructions.md)
 
 # Scaling_Strategy
-![Scaling_Strategy](docs/Scaling_Strategy)
+![Tradeoffs](docs/Tradeoffs.md)
+
 
 
 

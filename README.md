@@ -2,7 +2,7 @@
 This is a simple multi agent orchestration demonstrating advantages of Multi agent workflow, When to not use single agent and It's tradeoffs.
 
 # Problem Statement
-A Project Manager at Nova cart is planning to offload his decision making tasks to a single agent. Ex: He wants to replace a feature from Nova Cart's phone that 20% of users are actively using. In this scenario he would need behavioral data, revenue impact modeling, churn prediction, sentiment analysis, etc. to make a decision on the same. Given a **Single agent** might seem capable of all these tasks, When we overload a single agent with too many tasks, It results in vague outputs, **introduce hallucinations and reduce the trustworthiness of the suggested outputs.**
+A Project Manager at Nova cart is planning to offload his decision making tasks to a single agent. Ex: He wants to select a cloud warehouse vendor. In this scenario he would need revenue impact modeling, architectural complexity etc. to make a decision on the same. Given a **Single agent** might seem capable of all these tasks, When we overload a single agent with too many tasks, It results in vague outputs, **introduce hallucinations and reduce the trustworthiness of the suggested outputs.**
 
 # Goal 
 Build a well structured multi agent workflow to help with Project Manager's decision making tasks. Enabling faster but deeply researched and well analyzed decisions from both a Customer centric lens and Revenue risk lens. The final decision suggested should be critiqued for any gaps and provide a concrete roadmap to the Project Manager.
@@ -48,7 +48,7 @@ A copy of the Publisher's Output is pasted to the Notion Page configured. We can
  
  Vendor Selection :
 
- NovaCart needs to select a cloud data warehouse for its analytics platform. Current Redshift cluster costs $18K/month and query performance degrades during peak   hours. 
+ NovaCart needs to select a cloud data warehouse for its analytics platform. Current Redshift cluster costs $18K/month and query performance degrades during peak hours. 
  Options: (A) Migrate to Snowflake ($22K/month estimated, better concurrency), 
           (B) Migrate to BigQuery (pay-per-query, estimated $15K-25K/month), 
           (C) Optimize existing Redshift with RA3 nodes ($20K/month).

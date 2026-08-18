@@ -39,7 +39,11 @@ inventing facts. This agent is crucial for controlling hallucinations
 9. **Publisher Agent** - Provides a Clean Final Decision Memo along with a Confidence Score and reasoning.
 
 A copy of the Publisher's Output is pasted to the Notion Page configured. We can share the Notion page with stakeholders for async review.
-   
+
+# System Design 
+
+![SystemDesign](assets/Parallel_SystemDesign.png)
+
 # Sample Test 
 
 <img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/6390caf1-9c31-48e3-a75a-250999d0f6a2" />
@@ -63,7 +67,8 @@ A copy of the Publisher's Output is pasted to the Notion Page configured. We can
 ![Setup_Instructions](docs/Setup_Instructions.md)
 
 # Scaling_Strategy
-![Tradeoffs](docs/Tradeoffs.md)
+
+Full implementation templates and production scaling strategies are maintained in a private repository; access for technical review is available upon request.
 
 
 

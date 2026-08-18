@@ -1,4 +1,4 @@
-# Scaled and Optimization
+# Scale and Optimization
 
 **Adding Observability and telemetry layer**
 In a complex 8-agent chain, "black box" failures are common. Adding a Telemetry flow from the agents to a Trace Store ( like Langfuse ) will help monitor and debug the issues at each agent level.
